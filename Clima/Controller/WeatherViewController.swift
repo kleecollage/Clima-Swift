@@ -25,10 +25,14 @@ class WeatherViewController: UIViewController {
         locationManager.delegate = self
         locationManager.requestWhenInUseAuthorization()
         locationManager.requestLocation()
-        // locationManager.startUpdatingLocation() // This method allows to update the location to be updated periodically
+        // locationManager.startUpdatingLocation() // This method allows the location to be updated periodically
         
         weatherManager.delegate = self
         searchTextField.delegate = self
+    }
+    
+    @IBAction func currentLocationPressed(_ sender: UIButton) {
+        locationManager.requestLocation()
     }
 }
 
@@ -56,7 +60,7 @@ extension WeatherViewController: UITextFieldDelegate {
     
     func textFieldDidEndEditing(_ textField: UITextField) {
         if let city = searchTextField.text {
-            weatherManager.fetchWeather(cityName: city, latitude: nil, longitude: nil)
+            weatherManager.fetchWeather(cityName: city)
         }
         textField.text = ""
     }
@@ -85,7 +89,7 @@ extension WeatherViewController: CLLocationManagerDelegate {
             let lat = location.coordinate.latitude
             let lon = location.coordinate.longitude
             print("Location fetched: \(lat), \(lon)")
-            weatherManager.fetchWeather(cityName: nil, latitude: lat, longitude: lon)
+            weatherManager.fetchWeather(latitude: lat, longitude: lon)
         }
     }
     
